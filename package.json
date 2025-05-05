@@ -10,9 +10,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon -r dotenv/config src/index.js",
     "start": "node src/index.js",
-    "build":"npm install"
+    "build": "npm install"
   },
   "dependencies": {
+    "@ilovepdf/ilovepdf-nodejs": "^0.3.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",

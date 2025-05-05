@@ -1,9 +1,9 @@
 import multer from "multer";
 import path from 'path'
 import fs from 'fs'
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-
     if(!req.uniqueUploadDir)
     {
       let uniqueFolder = `./public/uploads/folder-${Date.now()}-${Math.random().toString(36).substring(2)}`;
@@ -20,6 +20,43 @@ const storage = multer.diskStorage({
   },
 });
 
+const storage_for_pdfjpg = multer.diskStorage({
+  destination: "./",
+  filename: function (req, file, cb) {
+    let datetimestamp = Date.now();
+        cb(null, file.fieldname + '-' + datetimestamp + `${Math.round(Math.random() * 1E9)}` + '.' +
+        file.originalname.split('.')[file.originalname.split('.').length -1])
+  },
+});
+
+const upload_for_pdfjpg = multer({
+  storage: storage_for_pdfjpg,
+  fileFilter: function (req, file, callback) {
+    var ext = path.extname(file.originalname);
+    if (ext !== ".pdf") {
+      return callback(new Error("uploaded file is not pdf"));
+    }
+    callback(null, true);
+  },
+  limits: {
+    fileSize: 20 * 1024 * 1024,
+  },
+});
+
+const upload_for_word = multer({
+  storage: storage,
+  fileFilter: function (req, file, callback) {
+    var ext = path.extname(file.originalname);
+    if (ext !== ".doc" && ext != ".docx") {
+      return callback(new Error("uploaded file is not word doc"));
+    }
+    callback(null, true);
+  },
+  limits: {
+    fileSize: 20 * 1024 * 1024,
+  },
+});
+
 const upload = multer({
   storage: storage,
   fileFilter: function (req, file, callback) {
@@ -30,9 +67,10 @@ const upload = multer({
     callback(null, true);
   },
   limits: {
-    fileSize: 50 * 1024 * 1024,
+    fileSize: 20 * 1024 * 1024,
   },
 });
+
 const imageUpload = multer({
   storage: storage,
   fileFilter: function (req, file, callback) {
@@ -49,5 +87,5 @@ const imageUpload = multer({
 });
 
 
-export { upload,imageUpload };
+export { upload,imageUpload,upload_for_pdfjpg, upload_for_word };
 

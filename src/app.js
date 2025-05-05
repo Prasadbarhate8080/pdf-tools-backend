@@ -23,12 +23,29 @@ app.use(express.static('public'))
 app.use("/api", apiLimiter);
 
 
-// app.use((err,req,res,next)=>{
-//     console.log(err.message);
-//     res.status(404).json({
-//       msg:err.message
-//     })
-//   })
+
+
+// app.use((err, req, res, next) => {
+//   if (err.code === 'LIMIT_FILE_SIZE') {
+//     res.setHeader("Content-Type", "application/json");
+//     return res.status(413).json({ error: "File size exceeds limit (Max 50MB allowed)" });
+//   }
+
+//   if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+//     res.setHeader("Content-Type", "application/json");
+//     return res.status(400).json({ error: "Only 5 PDF files allowed at a time." });
+//   }
+
+//   if (err.message === "uploaded file is not pdf") {
+//     res.setHeader("Content-Type", "application/json");
+//     return res.status(400).json({ error: "Only PDF files are allowed" });
+//   }
+
+//   console.error("Unhandled Error:", err);
+//   res.setHeader("Content-Type", "application/json");
+//   res.status(500).json({ error: "Something went wrong on server" });
+// });
+
 
 // imports route
 import { pdfRouter } from "./routes/pdf.routes.js";
